@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import br.ufrj.caronae.App;
 import br.ufrj.caronae.R;
 import br.ufrj.caronae.SharedPref;
 import br.ufrj.caronae.frags.DialogFragment.SelectorDialogFrag;
@@ -74,44 +73,44 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
 
     @Override
     public void onBindViewHolder(final SelectorListAdapter.ViewHolder holder, final int position) {
-        holder.text.setText(textList[position]);
-        if (position < colorIdList.length) {
-            holder.colorTab.setBackgroundColor(colorIdList[position]);
-        } else {
-            holder.colorTab.setBackgroundColor(context.getColor(android.R.color.transparent));
-        }
-
-        if (isMultipleChoice) {
-            if (position < colorIdList.length) {
-                holder.checkImage.setColorFilter(colorIdList[position]);
-            } else {
-                holder.checkImage.setColorFilter(context.getColor(android.R.color.darker_gray));
-            }
-            updateCheckerVisibility(holder.checkImage, selectedItens[position]);
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    selectedItens[position] = !selectedItens[position];
-                    updateCheckerVisibility(holder.checkImage, selectedItens[position]);
-                    if (choices[position].equals(""))
-                        choices[position] = textList[position];
-                    else
-                        choices[position] = "";
-                }
-            });
-        } else {
-            holder.checkImage.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
-            holder.checkImage.setColorFilter(context.getColor(android.R.color.darker_gray));
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPref.saveDialogSearchPref(type, textList[position]);
-                    setKeyByType();
-                    App.getBus().post(fragment);
-                    dialog.dismiss();
-                }
-            });
-        }
+//        holder.text.setText(textList[position]);
+//        if (position < colorIdList.length) {
+//            holder.colorTab.setBackgroundColor(colorIdList[position]);
+//        } else {
+//            holder.colorTab.setBackgroundColor(context.getColor(android.R.color.transparent));
+//        }
+//
+//        if (isMultipleChoice) {
+//            if (position < colorIdList.length) {
+//                holder.checkImage.setColorFilter(colorIdList[position]);
+//            } else {
+//                holder.checkImage.setColorFilter(context.getColor(android.R.color.darker_gray));
+//            }
+//            updateCheckerVisibility(holder.checkImage, selectedItens[position]);
+//            holder.layout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    selectedItens[position] = !selectedItens[position];
+//                    updateCheckerVisibility(holder.checkImage, selectedItens[position]);
+//                    if (choices[position].equals(""))
+//                        choices[position] = textList[position];
+//                    else
+//                        choices[position] = "";
+//                }
+//            });
+//        } else {
+//            holder.checkImage.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
+//            holder.checkImage.setColorFilter(context.getColor(android.R.color.darker_gray));
+//            holder.layout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    SharedPref.saveDialogSearchPref(type, textList[position]);
+//                    setKeyByType();
+//                    App.getBus().post(fragment);
+//                    dialog.dismiss();
+//                }
+//            });
+//        }
     }
 
     private void setKeyByType() {

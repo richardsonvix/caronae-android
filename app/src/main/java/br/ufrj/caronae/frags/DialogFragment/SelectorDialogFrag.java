@@ -13,9 +13,8 @@ import android.widget.TextView;
 import br.ufrj.caronae.App;
 import br.ufrj.caronae.R;
 import br.ufrj.caronae.SharedPref;
-import br.ufrj.caronae.adapters.SelectorListAdapter;
+import br.ufrj.caronae.adapters.CustomListAdapter;
 import br.ufrj.caronae.frags.RideOfferFrag;
-import br.ufrj.caronae.frags.RideSearchFrag;
 
 public class SelectorDialogFrag extends DialogFragment {
 
@@ -31,7 +30,7 @@ public class SelectorDialogFrag extends DialogFragment {
     private static android.support.v4.app.Fragment parentFragment;
     private static boolean isMultipleChoice;
 
-    SelectorListAdapter adapter;
+    CustomListAdapter adapter;
 
     public SelectorDialogFrag() {
         // Required empty public constructor
@@ -74,40 +73,40 @@ public class SelectorDialogFrag extends DialogFragment {
             cancelButton.setVisibility(View.GONE);
         }
 
-        adapter = new SelectorListAdapter(this, textArray, colorArray, selectedItens, isMultipleChoice, title, parentFragment);
+//        adapter = new CustomListAdapter(this, textArray, colorArray, selectedItens, isMultipleChoice, title, parentFragment);
         rv.setAdapter(adapter);
 
-        configureOkButton();
-        configureCancelButton();
+//        configureOkButton();
+//        configureCancelButton();
 
         dialogTitle.setText(title.toUpperCase());
         builder.setContentView(view);
         return builder;
     }
 
-    private void configureOkButton() {
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String[] choices = adapter.getChoices();
-                String result = "";
-                if (!choices[0].equals("")) {
-                    result = choices[0];
-                } else {
-                    for (int i = 1; i < choices.length; i++) {
-                        if (!choices[i].equals(""))
-                            result = result + "," + choices[i];
-                    }
-                    if (result.length() > 0)
-                        result = result.substring(1, result.length());
-                }
-                SharedPref.saveDialogSearchPref(title, result);
-                SharedPref.saveDialogTypePref(SharedPref.DIALOG_DISMISS_KEY, title);
-                App.getBus().post(new RideSearchFrag());
-                dismiss();
-            }
-        });
-    }
+//    private void configureOkButton() {
+//        okButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String[] choices = adapter.getChoices();
+//                String result = "";
+//                if (!choices[0].equals("")) {
+//                    result = choices[0];
+//                } else {
+//                    for (int i = 1; i < choices.length; i++) {
+//                        if (!choices[i].equals(""))
+//                            result = result + "," + choices[i];
+//                    }
+//                    if (result.length() > 0)
+//                        result = result.substring(1, result.length());
+//                }
+//                SharedPref.saveDialogSearchPref(title, result);
+//                SharedPref.saveDialogTypePref(SharedPref.DIALOG_DISMISS_KEY, title);
+//                App.getBus().post(new RideSearchFrag());
+//                dismiss();
+//            }
+//        });
+//    }
 
     private void configureCancelButton() {
         cancelButton.setOnClickListener(new View.OnClickListener() {

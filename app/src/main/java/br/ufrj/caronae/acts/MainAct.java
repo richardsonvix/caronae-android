@@ -47,6 +47,7 @@ import br.ufrj.caronae.Util;
 import br.ufrj.caronae.firebase.FirebaseTopicsHandler;
 import br.ufrj.caronae.frags.AboutFrag;
 import br.ufrj.caronae.frags.AllRidesFrag;
+import br.ufrj.caronae.frags.CustomListFrag;
 import br.ufrj.caronae.frags.FAQFrag;
 import br.ufrj.caronae.frags.FalaeFrag;
 import br.ufrj.caronae.frags.MyProfileFrag;
@@ -517,6 +518,18 @@ public class MainAct extends AppCompatActivity {
         transaction.setCustomAnimations(R.anim.anim_fade_in, R.anim.anim_fade_out);
         transaction.replace(R.id.flContent, new AllRidesFrag()).commit();
         setTitle(getString(R.string.frag_allrides_title));
+    }
+
+    public void showCustomListFrag(String[] list) {
+        backstackSafeCheck();
+//        backstack.remove(AllRidesFrag.class);
+        backstack.add(CustomListFrag.class);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_fade_in, R.anim.anim_fade_out);
+        CustomListFrag listFrag = new CustomListFrag();
+        listFrag.newInstance(list);
+        transaction.replace(R.id.flContent, listFrag).commit();
     }
 
     private void showProfileFrag() {
