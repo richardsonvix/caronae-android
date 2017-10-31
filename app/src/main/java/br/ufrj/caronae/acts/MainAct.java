@@ -520,15 +520,15 @@ public class MainAct extends AppCompatActivity {
         setTitle(getString(R.string.frag_allrides_title));
     }
 
-    public void showCustomListFrag(String[] list) {
+    public void showCustomListFrag(String[] list, String flag) {
         backstackSafeCheck();
 //        backstack.remove(AllRidesFrag.class);
         backstack.add(CustomListFrag.class);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_fade_in, R.anim.anim_fade_out);
+        transaction.setCustomAnimations(R.anim.anim_right_slide_in, R.anim.anim_left_slide_out);
         CustomListFrag listFrag = new CustomListFrag();
-        listFrag.newInstance(list);
+        listFrag.newInstance(list, flag);
         transaction.replace(R.id.flContent, listFrag).commit();
     }
 

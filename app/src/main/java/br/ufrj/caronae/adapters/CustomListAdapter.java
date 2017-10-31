@@ -1,7 +1,9 @@
 package br.ufrj.caronae.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
+import br.ufrj.caronae.Constants;
 import br.ufrj.caronae.R;
+import br.ufrj.caronae.Util;
 
 /**
  * Created by Luis on 10/24/2017.
@@ -21,6 +28,10 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     private final short COLOR_COLUMN = 1;
 
     String[] textList;
+    HashMap<String, Integer> colorHashMap;
+    Activity activity;
+    String flag;
+    int uniqueColor = -1;
     Context context;
 
     /**
@@ -28,8 +39,26 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
      * * is null or the color array is shorter than text array the color will be set transparent and check will
      * * be set to darker_gray
      **/
-    public CustomListAdapter(String[] textList) {
+    public CustomListAdapter(Activity activity, String[] textList, String flag) {
         this.textList = textList;
+        if (flag.equals(Constants.LIST_FLAG_NEIGHBOORHOOD) || flag.equals(Constants.LIST_FLAG_ZONE)) {
+            colorHashMap = Util.getZoneColorHashMap();
+            if (flag.equals(Constants.LIST_FLAG_NEIGHBOORHOOD)){
+                uniqueColor = colorHashMap.get(Util.getZoneByNeighboorhood(textList[0]));
+            }
+        }
+        else {
+            colorHashMap = Util.getCampiColorHashMap();
+            if (flag.equals(Constants.LIST_FLAG_HUB)){
+                uniqueColor = colorHashMap.get(Util.getCampiByCenterOrHub(textList[0]));
+            }
+        }
+        this.activity = activity;
+        this.flag = flag;
+
+        Log.e("CUSTOM", "list size: " + textList.length);
+        Log.e("CUSTOM", "hash: " + colorHashMap.toString());
+        Log.e("CUSTOM", "list: " + Arrays.asList(textList).toString());
     }
 
     @Override
@@ -45,6 +74,13 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     @Override
     public void onBindViewHolder(final CustomListAdapter.ViewHolder holder, final int position) {
         holder.text.setText(textList[position]);
+        if (uniqueColor != -1) {
+            holder.colorTab.setBackgroundColor(uniqueColor);
+            holder.checkImage.setColorFilter(uniqueColor);
+        } else {
+            holder.colorTab.setBackgroundColor(colorHashMap.get(textList[position]));
+            holder.checkImage.setColorFilter(colorHashMap.get(textList[position]));
+        }
     }
 
     private void setKeyByType() {

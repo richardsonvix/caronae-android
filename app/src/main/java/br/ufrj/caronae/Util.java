@@ -1,11 +1,13 @@
 package br.ufrj.caronae;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Shader;
@@ -14,6 +16,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -25,19 +28,27 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 import br.ufrj.caronae.models.ChatAssets;
 import br.ufrj.caronae.models.Ride;
 import br.ufrj.caronae.models.modelsforjson.RideForJson;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class Util {
@@ -840,5 +851,93 @@ public class Util {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static void setZoneColorHashMap(HashMap colorHashMap){
+
+        HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+
+        //convert to string using gson
+        Gson gson = new Gson();
+        String hashMapString = gson.toJson(hashMap);
+
+        //save in shared prefs
+        SharedPref.putPref(SharedPref.COLOR_MAP_ZONE_KEY, hashMapString);
+    }
+
+    public static HashMap getZoneColorHashMap(){
+
+        //TODO: get hash map from Backend
+
+        HashMap<String, Integer> colorHashMap = new HashMap<>();
+        colorHashMap.put("Zona Norte", Color.parseColor("#6e361f"));
+        colorHashMap.put("Zona Oeste", Color.parseColor("#2b388a"));
+        colorHashMap.put("Grande Niterói", Color.parseColor("#eb72ac"));
+        colorHashMap.put("Zona Sul", Color.parseColor("#17b270"));
+        colorHashMap.put("Centro", Color.parseColor("#ed8024"));
+        colorHashMap.put("Baixada", Color.parseColor("#eb3d38"));
+        colorHashMap.put("Outros", Color.parseColor("#000000"));
+
+        //get from shared prefs
+//        String colorStringMap = SharedPref.getPref(SharedPref.COLOR_MAP_ZONE_KEY);
+//        java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+//        HashMap<String, Integer> colorHashMap = new Gson().fromJson(colorStringMap, type);
+
+//        //use values
+//        String toastString = testHashMap2.get("key1") + " | " + testHashMap2.get("key2");
+//        Toast.makeText(this, toastString, Toast.LENGTH_LONG).show();
+        return colorHashMap;
+    }
+
+    public static void setCampiColorHashMap(HashMap colorHashMap){
+
+        HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+
+        //convert to string using gson
+        Gson gson = new Gson();
+        String hashMapString = gson.toJson(hashMap);
+
+        //save in shared prefs
+        SharedPref.putPref(SharedPref.COLOR_MAP_CAMPI_KEY, hashMapString);
+    }
+
+    public static HashMap getCampiColorHashMap(){
+
+        //TODO: get hash map from Backend
+
+        HashMap<String, Integer> colorHashMap = new HashMap<>();
+        colorHashMap.put("Cidade Universitária", Color.parseColor("#eb3d38"));
+        colorHashMap.put("Praia Vermelha", Color.parseColor("#2b388a"));
+
+        //get from shared prefs
+//        String colorStringMap = SharedPref.getPref(SharedPref.COLOR_MAP_CAMPI_KEY);
+//        java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+//        HashMap<String, Integer> colorHashMap = new Gson().fromJson(colorStringMap, type);
+
+//        //use values
+//        String toastString = testHashMap2.get("key1") + " | " + testHashMap2.get("key2");
+//        Toast.makeText(this, toastString, Toast.LENGTH_LONG).show();
+        return colorHashMap;
+    }
+
+    public static String getZoneByNeighboorhood(String neighborhood){
+        String[] zones = getZones();
+        String[] neighborhoods;
+        for (int i = 0; i < zones.length; i++){
+            neighborhoods = getNeighborhoods(zones[i]);
+            for (int j = 0; j < neighborhoods.length; j++){
+                if (neighborhood.equals(neighborhoods[j]))
+                    return zones[i];
+            }
+        }
+        return "";
+    }
+
+    public static String getCampiByCenterOrHub(String hub){
+        return "Cidade Universitária";
+    }
+
+    public static String getCenterByHub(String hub){
+        return "CT";
     }
 }

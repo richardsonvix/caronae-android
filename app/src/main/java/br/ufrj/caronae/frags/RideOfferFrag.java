@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.ufrj.caronae.App;
+import br.ufrj.caronae.Constants;
 import br.ufrj.caronae.R;
 import br.ufrj.caronae.SharedPref;
 import br.ufrj.caronae.Util;
@@ -169,31 +171,32 @@ public class RideOfferFrag extends Fragment {
 
     @OnClick(R.id.neighborhood_et)
     public void neighborhoodEt() {
-        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
-            @Override
-            public void onPositiveActionClicked(DialogFragment fragment) {
-                String selectedZone = getSelectedValue().toString();
-                zone = selectedZone;
-                if (selectedZone.equals("Outros")) {
-                    showOtherNeighborhoodDialog();
-                } else {
-                    locationEt2(selectedZone);
-                }
-                super.onPositiveActionClicked(fragment);
-            }
-
-            @Override
-            public void onNegativeActionClicked(DialogFragment fragment) {
-                super.onNegativeActionClicked(fragment);
-            }
-        };
-
-        builder.items(Util.getZones(), 0)
-                .title(getContext().getString(R.string.frag_rideOffer_pickZone))
-                .positiveAction(getContext().getString(R.string.ok))
-                .negativeAction(getContext().getString(R.string.cancel));
-        DialogFragment fragment = DialogFragment.newInstance(builder);
-        fragment.show(getFragmentManager(), null);
+//        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+//            @Override
+//            public void onPositiveActionClicked(DialogFragment fragment) {
+//                String selectedZone = getSelectedValue().toString();
+//                zone = selectedZone;
+//                if (selectedZone.equals("Outros")) {
+//                    showOtherNeighborhoodDialog();
+//                } else {
+//                    locationEt2(selectedZone);
+//                }
+//                super.onPositiveActionClicked(fragment);
+//            }
+//
+//            @Override
+//            public void onNegativeActionClicked(DialogFragment fragment) {
+//                super.onNegativeActionClicked(fragment);
+//            }
+//        };
+//
+//        builder.items(Util.getZones(), 0)
+//                .title(getContext().getString(R.string.frag_rideOffer_pickZone))
+//                .positiveAction(getContext().getString(R.string.ok))
+//                .negativeAction(getContext().getString(R.string.cancel));
+//        DialogFragment fragment = DialogFragment.newInstance(builder);
+//        fragment.show(getFragmentManager(), null);
+        ((MainAct)getActivity()).showCustomListFrag(Util.getZones(), Constants.LIST_FLAG_ZONE);
     }
 
     public void showOtherNeighborhoodDialog() {
@@ -254,7 +257,7 @@ public class RideOfferFrag extends Fragment {
 
     @OnClick(R.id.center_et)
     public void centerEt() {
-        ((MainAct)getActivity()).showCustomListFrag(Util.getCampi());
+        ((MainAct)getActivity()).showCustomListFrag(Util.getCampi(), Constants.LIST_FLAG_CENTER);
     }
 
     @OnClick(R.id.date_et)

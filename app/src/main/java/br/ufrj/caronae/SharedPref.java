@@ -29,6 +29,8 @@ public class SharedPref {
     public static final String DIALOG_CENTER_SEARCH_KEY            = "centro";
     public static final String DIALOG_DISMISS_KEY                  = "dismiss_key";
     public static final String MY_RIDES_DELETE_TUTORIAL            = "my_rides_delete_tut";
+    public static final String COLOR_MAP_ZONE_KEY                  = "colorZoneMap";
+    public static final String COLOR_MAP_CAMPI_KEY                 = "colorCampiMap";
 
 
 
